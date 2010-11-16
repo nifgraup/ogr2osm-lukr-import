@@ -29,8 +29,8 @@ def translateAttributes(attrs):
 	#	tags.update({'precision':attrs['NAKV'].lstrip()})
 		
 	#Stigaflokkur see http://www.gamli.umhverfissvid.is/Files/Skra_0014564.pdf
-	#if attrs['STIGAFLOKK'] == '1':#Adalstigur / main path
-	#	tags.update({'lukr:highway':'mainpath'})
+	if attrs['STIGAFLOKK'] == '1':#Adalstigur / main path
+		tags.update({'lukr:highway':'path'}) # already added
 		
 	elif attrs['STIGAFLOKK'] == '2':#Tengistigur / secondary path, http://www.althingi.is/altext/125/s/0760.html
 		tags.update({'lukr:highway':'tengistigur'})
@@ -44,8 +44,8 @@ def translateAttributes(attrs):
 
 	
 	#Tegund
-	#if attrs['TEG'] == '1':#Stigur
-	#	tags.update({'lukr:highway':'path'}) # already added
+	if attrs['TEG'] == '1':#Stigur
+		tags.update({'lukr:highway':'path'}) # already added
 		
 	elif attrs['TEG'] == '2':#Stett
 		tags.update({'lukr:highway':'footway'})

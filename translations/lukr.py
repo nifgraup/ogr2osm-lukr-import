@@ -15,42 +15,47 @@ Extra attributes can be added later if needed, as OBJECTID is unique.
 def translateAttributes(attrs):
 	if not attrs: return
 	
-	tags = {}
-	
-	if attrs['BREIDD'] != '  0.00':
-		tags = {'width':attrs['BREIDD'].lstrip()}
-	
-	if attrs['NAKV']:
-		tags.update({'PRECISION':attrs['NAKV'].lstrip()})
+	#fyrir allt
+	tags = {'lukr:highway':'path','foot':'designated','bicycle':'yes'}
 	
 	if attrs['OBJECTID']:
 		tags.update({'lukr:objectid':attrs['OBJECTID']})
 	
-	#Todo: Stigaflokkur
-	if attrs['STIGAFLOKK'] == '1':#Adalstigur
-		tags.update({'lukr:highway':'road'})
+	if attrs['BREIDD'] != '  0.00':
+		tags = {'width':attrs['BREIDD'].lstrip()}
+	
+	#do we need data precision
+	#if attrs['NAKV']:
+	#	tags.update({'precision':attrs['NAKV'].lstrip()})
 		
-	elif attrs['STIGAFLOKK'] == '2':#Tengistigur
-		tags.update({'lukr:highway':'trunk'})
+	#Stigaflokkur see http://www.gamli.umhverfissvid.is/Files/Skra_0014564.pdf
+	#if attrs['STIGAFLOKK'] == '1':#Adalstigur / main path
+	#	tags.update({'lukr:highway':'mainpath'})
+		
+	elif attrs['STIGAFLOKK'] == '2':#Tengistigur / secondary path, http://www.althingi.is/altext/125/s/0760.html
+		tags.update({'lukr:highway':'tengistigur'})
 	
 	elif attrs['STIGAFLOKK'] == '3':#Adrir stigar
-		tags.update({'lukr:highway':'construction','construction':'road'})
+		tags.update({'lukr:highway':'unclassified'})
 	
-	elif attrs['STIGAFLOKK'] == '4':#Malarstigur
-		tags.update({'surface':'unpaved'})
+	elif attrs['STIGAFLOKK'] == '4':#Malarstigur / gravel path
+		tags.update({'surface':'gravel'})
+	#or	tags.update({'surface':'unpaved'})
+
 	
-	#Todo: Tegund
-	if attrs['TEG'] == '1':#Stigur
-		tags.update({'lukr:highway':'path'})
+	#Tegund
+	#if attrs['TEG'] == '1':#Stigur
+	#	tags.update({'lukr:highway':'path'}) # already added
 		
 	elif attrs['TEG'] == '2':#Stett
-		tags.update({'lukr:highway':'trunk'})
+		tags.update({'lukr:highway':'footway'})
 	
 	elif attrs['TEG'] == '3':#Hitaveitustigur
-		tags.update({'lukr:highway':'construction','construction':'road'})
+		tags.update({'man_made':'pipeline','location':'overground','type':'hot_water'})
 	
 	elif attrs['TEG'] == '4':#Malarstigur
-		tags.update({'surface':'unpaved'})
+		tags.update({'surface':'gravel'})
+	#or	tags.update({'surface':'unpaved'})
 	
 	return tags
 

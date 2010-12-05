@@ -15,8 +15,11 @@ Extra attributes can be added later if needed, as OBJECTID is unique.
 def translateAttributes(attrs):
 	if not attrs: return
 	
+	tags = {}
+
 	#fyrir allt
-	tags = {'lukr:highway':'path','foot':'designated','bicycle':'yes'}
+	tags.update({'lukr_raw':str(attrs).replace("&apos", "")})
+	tags.update({'lukr:highway':'path','foot':'designated','bicycle':'yes'})
 	
 	if attrs['OBJECTID']:
 		tags.update({'lukr:objectid':attrs['OBJECTID']})
@@ -51,10 +54,10 @@ def translateAttributes(attrs):
 		tags.update({'lukr:highway':'footway'})
 	
 	elif attrs['TEG'] == '3':#Hitaveitustigur
-		tags.update({'man_made':'pipeline','location':'overground','type':'hot_water'})
+		tags.update({'lukr:highway':'path','lukr:man_made':'pipeline','location':'overground','type':'hot_water'})
 	
 	elif attrs['TEG'] == '4':#Malarstigur
-		tags.update({'surface':'gravel'})
+		tags.update({'lukr:highway':'path','surface':'gravel'})
 	#or	tags.update({'surface':'unpaved'})
 	
 	return tags

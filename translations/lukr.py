@@ -16,10 +16,14 @@ def translateAttributes(attrs):
 	if not attrs: return
 	
 	tags = {}
+
+# Include all original tags with the lukr: prefix
+	for k, v in attrs.iteritems():
+		tags.update({'lukr:'+k:v})
+#	tags.update({'lukr:raw':str(attrs)}) #all lukr original tags, including the unique ObjectId.
 	
 	#tags on all paths
 	tags.update({'source':'lukr', 'source:date':'2010-09-17'})
-	tags.update({'lukr:raw':str(attrs)}) #all lukr original tags, including the unique ObjectId.
 	tags.update({'lukr:highway':'footway'}) #remove the lukr: prefix when the path has been reviewed.
 	tags.update({'bicycle':'yes'}) #bicycles are allowed on all roads
 	

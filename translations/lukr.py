@@ -16,49 +16,37 @@ def translateAttributes(attrs):
 	if not attrs: return
 	
 	tags = {}
-
-	#fyrir allt
-	tags.update({'lukr_raw':str(attrs).replace("&apos", "")})
-	tags.update({'lukr:highway':'path','foot':'designated','bicycle':'yes'})
 	
-	if attrs['OBJECTID']:
-		tags.update({'lukr:objectid':attrs['OBJECTID']})
+	#tags on all paths
+	tags.update({'source':'lukr', 'source:date':'2010-09-18'})
+	tags.update({'lukr:raw':str(attrs).replace("&apos", "")}) #all lukr original tags, including the unique ObjectId.
+	tags.update({'lukr:highway':'footway'}) #remove the lukr: prefix when the path has been reviewed.
+	tags.update({'bicycle':'yes'}) #bicycles are allowed on all roads
 	
+	#add width if it's not zero
 	if attrs['BREIDD'] != '  0.00':
 		tags = {'width':attrs['BREIDD'].lstrip()}
 	
-	#do we need data precision
-	#if attrs['NAKV']:
-	#	tags.update({'precision':attrs['NAKV'].lstrip()})
-		
-	#Stigaflokkur see http://www.gamli.umhverfissvid.is/Files/Skra_0014564.pdf
-	if attrs['STIGAFLOKK'] == '1':#Adalstigur / main path
-		tags.update({'lukr:highway':'path'}) # already added
-		
-	elif attrs['STIGAFLOKK'] == '2':#Tengistigur / secondary path, http://www.althingi.is/altext/125/s/0760.html
-		tags.update({'lukr:highway':'tengistigur'})
-	
-	elif attrs['STIGAFLOKK'] == '3':#Adrir stigar
-		tags.update({'lukr:highway':'unclassified'})
-	
-	elif attrs['STIGAFLOKK'] == '4':#Malarstigur / gravel path
+#Stigaflokkur see http://www.gamli.umhverfissvid.is/Files/Skra_0014564.pdf
+#This classification system for pathways is for administrative use.
+	if attrs['STIGAFLOKK'] == '4':#Malarstigur / gravel path
 		tags.update({'surface':'gravel'})
-	#or	tags.update({'surface':'unpaved'})
-
+#	elif attrs['STIGAFLOKK'] == '1':#Adalstigur / main path
+#		tags.update({'lukr:highway':'path'}) # already added	
+#	elif attrs['STIGAFLOKK'] == '2':#Tengistigur / secondary path, http://www.althingi.is/altext/125/s/0760.html
+#		tags.update({'lukr:highway':'tengistigur'})
+#	elif attrs['STIGAFLOKK'] == '3':#Adrir stigar
+#		tags.update({'lukr:highway':'unclassified'})
 	
-	#Tegund
-	if attrs['TEG'] == '1':#Stigur
-		tags.update({'lukr:highway':'path'}) # already added
-		
-	elif attrs['TEG'] == '2':#Stett
-		tags.update({'lukr:highway':'footway'})
-	
+#Tegund
+	if attrs['TEG'] == '2':#Stett
+		tags.update({'surface':'paved'}) #todo, is this correct?
 	elif attrs['TEG'] == '3':#Hitaveitustigur
-		tags.update({'lukr:highway':'path','lukr:man_made':'pipeline','location':'overground','type':'hot_water'})
-	
+		tags.update({'man_made':'pipeline','location':'overground','type':'hot_water'})
 	elif attrs['TEG'] == '4':#Malarstigur
-		tags.update({'lukr:highway':'path','surface':'gravel'})
-	#or	tags.update({'surface':'unpaved'})
-	
+		tags.update({'surface':'gravel'})
+#	elif attrs['TEG'] == '1':#Stigur
+#		tags.update({'lukr:highway':'path'}) # already added
+
 	return tags
 

@@ -18,14 +18,14 @@ def translateAttributes(attrs):
 	tags = {}
 	
 	#tags on all paths
-	tags.update({'source':'lukr', 'source:date':'2010-09-18'})
+	tags.update({'source':'lukr', 'source:date':'2010-09-17'})
 	tags.update({'lukr:raw':str(attrs).replace("&apos", "")}) #all lukr original tags, including the unique ObjectId.
 	tags.update({'lukr:highway':'footway'}) #remove the lukr: prefix when the path has been reviewed.
 	tags.update({'bicycle':'yes'}) #bicycles are allowed on all roads
 	
 	#add width if it's not zero
 	if attrs['BREIDD'] != '  0.00':
-		tags = {'width':attrs['BREIDD'].lstrip()}
+		tags.update({'width':attrs['BREIDD'].lstrip()})
 	
 #Stigaflokkur see http://www.gamli.umhverfissvid.is/Files/Skra_0014564.pdf
 #This classification system for pathways is for administrative use.

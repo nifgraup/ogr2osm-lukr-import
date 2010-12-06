@@ -19,7 +19,7 @@ def translateAttributes(attrs):
 	
 	#tags on all paths
 	tags.update({'source':'lukr', 'source:date':'2010-09-17'})
-	tags.update({'lukr:raw':str(attrs).replace("&apos", "")}) #all lukr original tags, including the unique ObjectId.
+	tags.update({'lukr:raw':str(attrs)}) #all lukr original tags, including the unique ObjectId.
 	tags.update({'lukr:highway':'footway'}) #remove the lukr: prefix when the path has been reviewed.
 	tags.update({'bicycle':'yes'}) #bicycles are allowed on all roads
 	
@@ -40,13 +40,19 @@ def translateAttributes(attrs):
 	
 #Tegund
 	if attrs['TEG'] == '2':#Stett
-		tags.update({'surface':'paved'}) #todo, is this correct?
+		tags.update({'surface':'paved'})
 	elif attrs['TEG'] == '3':#Hitaveitustigur
 		tags.update({'man_made':'pipeline','location':'overground','type':'hot_water'})
 	elif attrs['TEG'] == '4':#Malarstigur
 		tags.update({'surface':'gravel'})
 #	elif attrs['TEG'] == '1':#Stigur
 #		tags.update({'lukr:highway':'path'}) # already added
-
+	
+#Flokkur
+	if attrs['FLOKKUR'] == '217':#midlinur stettar
+		tags.update({'surface':'paved'})
+#	elif attrs['FLOKKUR'] == '215':#midlinur stigs
+#		tags.update({'highway':'path'})
+	
 	return tags
 

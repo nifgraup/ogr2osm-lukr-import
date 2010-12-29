@@ -667,7 +667,7 @@ outputtedSegments = {}
 for (lineID, lineSegment) in lineSegments.items():
 	if showProgress: sys.stdout.write(str(len(lineSegment)) + " ")
 	if len(lineSegment) == 1:	# The line will be a simple way
-		w.start('way', id=str(lineID), action='modify', visible='true')
+		w.start('way', id=str(lineID), action='create', visible='true')
 		
 		for nodeID in segmentNodes[ lineSegment[0] ]:
 			w.element('nd',ref=str(nodeID))
@@ -683,11 +683,11 @@ for (lineID, lineSegment) in lineSegments.items():
 		#print "Line ID " + str(lineID) + " uses more than one segment: " + str(lineSegment)
 		for segmentID in lineSegment:
 			if segmentID not in outputtedSegments:
-				w.start('way', id=str(segmentID), action='modify', visible='true')
+				w.start('way', id=str(segmentID), action='create', visible='true')
 				for nodeID in segmentNodes[ segmentID ]:
 					w.element('nd',ref=str(nodeID))
 				w.end('way')
-		w.start('relation', id=str(lineID), action='modify', visible='true')
+		w.start('relation', id=str(lineID), action='create', visible='true')
 		for segmentID in lineSegment:
 			w.element('member', type='way', ref=str(segmentID), role='')
 		for (tagKey,tagValue) in lineTags[lineID].items():
@@ -706,7 +706,7 @@ for (areaID, areaRing) in areaRings.items():
 	#sys.stdout.write(str(len(areaRings)))
 	
 	if len(areaRing) == 1 and len(areaRing[0]) == 1: # The area will be a simple way
-		w.start('way', id=str(areaID), action='modify', visible='true')
+		w.start('way', id=str(areaID), action='create', visible='true')
 		
 		for nodeID in segmentNodes[ areaRing[0][0] ]:
 			w.element('nd',ref=str(nodeID))
@@ -725,13 +725,13 @@ for (areaID, areaRing) in areaRings.items():
 		for ring in areaRing:
 			for segmentID in ring:
 				if segmentID not in outputtedSegments:
-					w.start('way', id=str(segmentID), action='modify', visible='true')
+					w.start('way', id=str(segmentID), action='create', visible='true')
 					for nodeID in segmentNodes[ segmentID ]:
 						w.element('nd',ref=str(nodeID))
 					w.end('way')
 				
 		
-		w.start('relation', id=str(areaID), action='modify', visible='true')
+		w.start('relation', id=str(areaID), action='create', visible='true')
 		w.element("tag", k='type', v='multipolygon')
 		
 		role = 'outer'
